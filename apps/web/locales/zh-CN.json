@@ -1,0 +1,16 @@
+{
+  "charts": {
+    "history": "历史记录",
+    "noCharts": "暂无图表",
+    "noChartSelected": "请输入提示词生成图表",
+    "chartWillAppearHere": "图表将显示在此处",
+    "promptPlaceholder": "请描述您想要的图表数据...",
+    "send": "生成"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "email": "邮箱",
+    "password": "密码"
+  }
+}
