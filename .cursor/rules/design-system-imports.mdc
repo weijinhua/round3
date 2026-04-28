@@ -1,0 +1,20 @@
+---
+description: Enforce UI imports from the unified package alias
+globs: apps/web/**/*
+alwaysApply: false
+---
+
+# Design System Imports
+
+All UI components, tokens, and patterns MUST be imported from `@charts-gen/ui`. Direct imports from `packages/design-system/` or relative paths into other UI packages are forbidden.
+
+## Why
+Maintains a single stable entry point for all UI and allows for structural changes in the design system without affecting application code.
+
+## Examples
+// ❌ BAD
+import { Button } from '../../packages/design-system/components/Button';
+import { tokens } from '@/shared/tokens';
+
+// ✅ GOOD
+import { Button, tokens } from '@charts-gen/ui';

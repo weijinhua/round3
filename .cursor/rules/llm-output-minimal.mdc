@@ -1,8 +1,6 @@
 ---
-description: Ultra minimal output rules
 alwaysApply: true
 ---
-
 # 1️⃣ 零解释
 - 默认不输出解释、思考过程、总结
 - 除非用户明确要求

@@ -1,0 +1,21 @@
+---
+description: Require StateShell for asynchronous data rendering
+globs: apps/web/{app,features}/**/*.tsx
+alwaysApply: false
+---
+
+# StateShell Required
+
+Every component that renders asynchronous data (data-fetching) MUST be wrapped in a `<StateShell>`.
+
+## Why
+Ensures consistent handling of loading, empty, and error states across the application.
+
+## Examples
+// ❌ BAD
+{isLoading ? <Loading /> : <List items={data} />}
+
+// ✅ GOOD
+<StateShell loading={isLoading} empty={!data.length} error={error}>
+  <List items={data} />
+</StateShell>

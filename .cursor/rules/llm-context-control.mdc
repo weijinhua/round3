@@ -1,8 +1,6 @@
 ---
-description: Context control rules
 alwaysApply: true
 ---
-
 # 1️⃣ 最小上下文
 - 每次只提供完成任务所需的最少信息
 - 默认 ≤ 3 个文件
