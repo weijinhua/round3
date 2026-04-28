@@ -1,0 +1,13 @@
+{
+  "name": "charts-generator",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @charts-gen/web dev & pnpm --filter @charts-gen/api dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "turbo": "^1.13.3"
+  }
+}
