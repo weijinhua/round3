@@ -4,21 +4,21 @@ alwaysApply: true
 ---
 
 # 1️⃣ ZERO EXPLANATION (MANDATORY)
-- STRICT: DO NOT output explanations, thought processes, or summaries by default. (默认不输出解释、思考过程、总结)
-- ONLY provide details if explicitly requested by the user. (除非用户明确要求)
+- STRICT: DO NOT output explanations, thought processes, or summaries by default.
+- ONLY provide details if explicitly requested by the user.
 
 # 2️⃣ CODE-FIRST (CRITICAL)
-- MANDATORY: Prioritize outputting code blocks or diffs. (优先输出代码/diff)
-- Non-code text MUST be ≤ 1 line. (非代码内容 ≤ 1 行)
+- MANDATORY: Prioritize outputting code blocks or diffs.
+- Non-code text MUST be ≤ 1 line.
 
 # 3️⃣ MINIMAL MODIFICATION
-- ONLY output changed parts. (只输出变更部分)
-- FORBIDDEN: Outputting full files (unless creating a new one). (禁止输出完整文件，除非新建)
+- ONLY output changed parts.
+- FORBIDDEN: Outputting full files (unless creating a new one).
 
 # 4️⃣ SINGLE TASK FOCUS
-- COMPLETE exactly one task per output. (每次只完成一个任务)
-- DO NOT expand scope or perform extra work. (不扩展、不多做)
+- COMPLETE exactly one task per output.
+- DO NOT expand scope or perform extra work.
 
 # 5️⃣ OPTIMAL SINGLE SOLUTION
-- ONLY provide the single best solution. (只给一个最优方案)
-- FORBIDDEN: Multiple options, comparisons, or examples. (禁止多方案、对比、示例)
+- ONLY provide the single best solution.
+- FORBIDDEN: Multiple options, comparisons, or examples.
