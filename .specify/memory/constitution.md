@@ -1,23 +1,22 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version change: (none) → 1.0.0 (initial ratification)
-Added:
-  - Principle I: Code Quality & Type Safety
-  - Principle II: Test-First Development
-  - Principle III: UX Consistency via Design System
-  - Principle IV: Performance by Default
-  - Principle V: Simplicity & Minimal Footprint
-  - Section: UI Governance & AI Generation Constraints
-  - Section: Development Workflow & Quality Gates
-  - Section: Governance
-Removed: All placeholder tokens
-Modified principles: N/A (initial version)
+Version change: template placeholders → 1.0.0
+Added principles:
+  - I. Code Quality & Type Safety
+  - II. Test-First Development
+  - III. UX Consistency via Design System
+  - IV. Performance by Default
+  - V. Simplicity & Minimal Footprint
+Added sections:
+  - UI Governance & AI Generation Constraints
+  - Development Workflow & Quality Gates
+Removed sections: None
 Templates requiring updates:
-  - .specify/templates/plan-template.md    ✅ reviewed — Constitution Check gate is generic, no change needed
-  - .specify/templates/spec-template.md    ✅ reviewed — no new mandatory sections added
-  - .specify/templates/tasks-template.md   ✅ reviewed — task categories align with principles
-  - Command files                          ✅ reviewed — no commands/ subfolder exists in this repo
+  - .specify/templates/plan-template.md    ✅ reviewed — no change required
+  - .specify/templates/spec-template.md    ✅ reviewed — no change required
+  - .specify/templates/tasks-template.md   ✅ reviewed — no change required
+  - .cursor/commands/*.md                  ✅ reviewed — no change required
 Deferred TODOs: None
 -->
 
@@ -161,4 +160,4 @@ document takes precedence.
 this document. The runtime development guidance file, if present, is
 `.specify/memory/agent-context.md`.
 
-**Version**: 1.0.0 | **Ratified**: 2026-04-28 | **Last Amended**: 2026-04-28
+**Version**: 1.0.0 | **Ratified**: 2026-04-28 | **Last Amended**: 2026-04-29
