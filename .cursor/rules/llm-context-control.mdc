@@ -1,22 +1,24 @@
 ---
+description: STRICT context control to override default thoroughness. Mandatory minimal file access.
 alwaysApply: true
 ---
-# 1️⃣ 最小上下文
-- 每次只提供完成任务所需的最少信息
-- 默认 ≤ 3 个文件
 
-# 2️⃣ 禁止全量加载
-- 禁止加载整个项目 / 目录
-- 禁止“analyze entire repo”
+# 1️⃣ MINIMAL CONTEXT (STRICT)
+- MANDATORY: Provide only the absolute minimum information required.
+- DEFAULT: Access ≤ 3 files per turn. (每次只提供完成任务所需的最少信息，默认 ≤ 3 个文件)
 
-# 3️⃣ 优先摘要
-- 长文档必须先压缩为摘要再使用
-- 禁止直接输入大段原文
+# 2️⃣ NO FULL LOADING (CRITICAL)
+- FORBIDDEN: Loading the entire project or directory. (禁止加载整个项目/目录)
+- FORBIDDEN: Commands like "analyze entire repo" or "scan all files". (禁止“analyze entire repo”)
 
-# 4️⃣ 只选直接依赖
-- 只包含当前任务直接相关代码
-- 不包含间接依赖
+# 3️⃣ SUMMARY FIRST
+- CRITICAL: Long documents MUST be compressed into summaries before usage. (长文档必须先压缩为摘要再使用)
+- FORBIDDEN: Pasting large blocks of raw text. (禁止直接输入大段原文)
 
-# 5️⃣ 分步输入
-- 大任务拆分为多轮
-- 每轮只输入当前步骤所需内容
+# 4️⃣ DIRECT DEPENDENCIES ONLY
+- ONLY include code directly related to the current task. (只包含当前任务直接相关代码)
+- EXCLUDE all indirect dependencies. (不包含间接依赖)
+
+# 5️⃣ STEP-BY-STEP INPUT
+- BREAK large tasks into multiple turns. (大任务拆分为多轮)
+- ONLY input content required for the CURRENT step. (每轮只输入当前步骤所需内容)
