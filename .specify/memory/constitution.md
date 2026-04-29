@@ -1,163 +1,202 @@
-<!--
+﻿<!--
 SYNC IMPACT REPORT
 ==================
-Version change: template placeholders → 1.0.0
+Version change: 1.1.0 -> 1.2.0
 Added principles:
-  - I. Code Quality & Type Safety
-  - II. Test-First Development
-  - III. UX Consistency via Design System
-  - IV. Performance by Default
-  - V. Simplicity & Minimal Footprint
-Added sections:
-  - UI Governance & AI Generation Constraints
-  - Development Workflow & Quality Gates
-Removed sections: None
-Templates requiring updates:
-  - .specify/templates/plan-template.md    ✅ reviewed — no change required
-  - .specify/templates/spec-template.md    ✅ reviewed — no change required
-  - .specify/templates/tasks-template.md   ✅ reviewed — no change required
-  - .cursor/commands/*.md                  ✅ reviewed — no change required
-Deferred TODOs: None
+  - I.   Sub-path imports from @charts-gen/ui are forbidden
+  - II.  Components MUST NOT expose a raw className prop
+  - II.  Patterns MUST use Component Layer items only — no raw HTML elements
+  - II.  tailwind.preset.ts in design-system is the sole shared Tailwind config
+  - II.  Co-located tests required for ALL new components unconditionally
+  - III. bcrypt cost factor MUST be 12
+  - III. JWT access token TTL 15 min; refresh token TTL 7 days
+  - III. Redis key patterns with explicit TTLs and SHA-256 prompt hash
+  - III. Allowed chart types are exactly: bar, line, pie, scatter
+  - III. Global ValidationPipe with transform:true, whitelist:true
+  - III. response.interceptor.ts enforces { data, error } envelope globally
+  - III. New backend modules MUST be registered in app.module.ts
+  - IV.  react-hook-form + zod added to frontend stack
+  - IV.  openai SDK is the required LLM client
+  - IV.  Redis 7 and echarts-for-react made explicit
+  - V.   globals.css contains CSS custom properties for tokens only
+  - V.   Feature slices MUST follow components/hooks/services/types.ts structure
+  - V.   shared/ MUST contain hooks/, lib/, types/ only
+  - V.   design-system hooks/ MUST NOT call application API
+Modified principles:
+  - III. Auth: "bcrypt password hashing" -> "bcrypt with cost factor 12"
+  - III. Auth: "JWT access tokens" -> "JWT access tokens (15 min TTL), refresh tokens (7 day TTL)"
+  - III. AI: cache key now explicitly SHA-256 of normalized prompt, TTL 1h
+  - II.  Tests: "when new or behavior changes" -> unconditional for all new components
+Removed rules:
+  - None
 -->
-
 # Charts Generator Constitution
 
 ## Core Principles
 
-### I. Code Quality & Type Safety
+### I. Frontend Layering & UI Boundary
+All frontend code lives in `apps/web` and follows the Next.js App Router scaffold from `specs/03-scaffold.md`.
 
-All TypeScript code MUST compile with `strict: true`; no `@ts-ignore` or `any` except where
-explicitly justified in a code comment. ESLint `no-restricted-imports` MUST block direct
-imports from `packages/design-system/**` — all application code MUST import exclusively from
-`@charts-gen/ui`. Raw `style={{}}` attributes are forbidden in all files outside
-`packages/design-system/`. Hard-coded color, spacing, or font-size values (magic numbers) are
-forbidden everywhere — all visual constants MUST reference design tokens. All component visual
-variants MUST be defined via `cva()` — no ad-hoc conditional class strings. Raw HTML block
-elements (`<div>`, `<span>`, `<button>`) are forbidden in `app/` and `features/` files; only
-design-system components may be used. A component or pattern MUST exist in the design-system
-before any page or feature code may reference it.
+`app/` page files compose patterns and feature components. They MUST NOT define layouts with `style={{}}`, CSS Modules, or Tailwind utility strings, and they MUST use named patterns for page structure when a suitable pattern exists.
 
-**Rationale**: Consistent enforcement boundaries make AI-generated code predictable and
-auditable. Type safety eliminates entire categories of runtime errors across the full-stack
-TypeScript monorepo.
+Application code MUST import UI only from `@charts-gen/ui`. Direct imports from `packages/design-system/**` or `packages/ui/**` are forbidden. `packages/ui` is the only public gate to the design system.
 
-### II. Test-First Development
+Sub-path imports from `@charts-gen/ui` are forbidden — only the top-level alias is allowed. `import { Button } from '@charts-gen/ui/components/Button'` is disallowed; the correct form is `import { Button } from '@charts-gen/ui'`.
 
-TDD is mandatory for all design-system components and all backend service/controller code:
-tests MUST be written and reviewed, confirmed to FAIL, before implementation begins
-(Red-Green-Refactor). Every design-system component folder MUST contain a co-located
-`*.test.tsx` unit test file. Every NestJS module MUST have contract tests covering its API
-endpoints and integration tests covering inter-module communication. Tests MUST NOT be written
-after the fact to satisfy coverage metrics — the failing test is the specification.
+Route groups and page locations are fixed by scaffold:
+- `apps/web/app/(auth)/login/page.tsx`
+- `apps/web/app/(auth)/register/page.tsx`
+- `apps/web/app/(dashboard)/dashboard/page.tsx`
 
-**Rationale**: Test-first discipline ensures that the design-system public API and backend
-contracts are explicitly defined before implementation, reducing rework and preventing
-regression as the codebase grows.
+### II. Design System as Sole UI Source
+`packages/design-system` is the only place where visual primitives, tokens, and layout patterns are defined.
 
-### III. UX Consistency via Design System
+The design system uses a strict dependency order: `tokens` -> `components` -> `patterns`. No layer may import upward, and no design-system file may import from `apps/web`, `apps/api`, or `packages/ui`.
 
-All UI imports in application code MUST come from `@charts-gen/ui` — no exceptions. Every
-page layout MUST use a named pattern from `packages/design-system/patterns/`; pages MUST NOT
-define their own layout grids or flex structures. `<StateShell>` MUST wrap every component
-that renders asynchronous data, providing loading skeleton, empty state, and error banner
-states consistently. All user-visible strings MUST be wrapped in `t()` from next-intl; no
-string literals may appear directly in JSX (default locale: `zh-CN`). New UI elements MUST be
-added to `packages/design-system/` first and reviewed before any product page consumes them.
-Existing public APIs of components and patterns MUST only be extended additively — new props
-MUST be optional with sensible defaults; breaking changes are forbidden.
+Tokens, components, patterns, hooks, and utils remain inside the design-system package. Application code only consumes them through `@charts-gen/ui`.
 
-**Rationale**: A single enforced import boundary and mandatory pattern/state model ensures
-every page behaves and looks consistently regardless of which developer or AI agent generates
-the code, removing layout reinvention and ad-hoc state handling as failure modes.
+All components MUST:
+- use tokens for visual values,
+- define variants with `cva()`,
+- NOT expose a raw `className` prop on the public interface — styles are fully encapsulated via CVA,
+- export through a folder-local `index.ts`,
+- include a co-located test file (`Component.test.tsx`) unconditionally for every new component.
 
-### IV. Performance by Default
+Patterns MUST:
+- be named generically,
+- accept `ReactNode` slots or props,
+- use design-system components rather than raw HTML elements (`<div>`, `<span>`, `<button>` are forbidden inside pattern files),
+- not import page or feature code.
 
-LLM responses MUST be cached in Redis keyed by the SHA-256 hash of the normalized prompt with
-a 1-hour TTL, eliminating duplicate LLM calls for identical inputs. Static assets MUST be
-served via CDN with cache headers of at minimum 30 days. The NestJS backend MUST remain
-stateless — all shared state (sessions, refresh tokens, LLM cache) MUST reside in Redis,
-enabling horizontal scaling without session affinity. LLM generation calls MUST enforce a
-30-second timeout; if P99 latency exceeds acceptable thresholds the endpoint MUST migrate to
-an async BullMQ job pattern before scaling. Access tokens MUST have a maximum lifetime of
-15 minutes. Tailwind CSS JIT mode MUST be used with full content path coverage to ensure
-unused utility classes are purged at build time.
+`packages/design-system/tailwind.preset.ts` is the sole shared Tailwind configuration. `apps/web/tailwind.config.ts` extends it via `presets`. No other package defines its own Tailwind configuration.
 
-**Rationale**: Performance constraints are architectural decisions that become expensive to
-retrofit. Caching, statelessness, and token TTL are established at constitution level so they
-are non-negotiable implementation requirements, not afterthoughts.
+`packages/design-system/hooks/` contains shared UI hooks (e.g. `useMediaQuery`). These hooks MUST NOT call any application API.
 
-### V. Simplicity & Minimal Footprint
+Pages and feature components that render async data MUST wrap it in `<StateShell>`.
 
-YAGNI applies unconditionally: no infrastructure component is introduced before it is
-required. The async BullMQ job queue MUST NOT be activated until synchronous LLM calls
-demonstrably fail P99 latency requirements. Adding a new chart type MUST touch exactly two
-files (`ai.service.ts` and `ChartCanvas.tsx`) — any change requiring more files is a design
-violation. The LLM provider MUST be swappable by changing environment variables only, with
-zero code changes. Deprecated public API members MUST be marked `@deprecated` and retained
-for exactly one release cycle before removal. Complexity deviations from this constitution
-MUST be documented in the `Complexity Tracking` table of the relevant `plan.md` with
-justification.
+All user-visible strings in frontend app and feature code MUST go through `t()` from `next-intl`. The default locale is `zh-CN`.
 
-**Rationale**: Complexity compounds. Every pre-emptive abstraction or infrastructure addition
-incurs ongoing maintenance cost and increases the surface area for AI-generated code to make
-incorrect assumptions. Explicit simplicity rules bound that surface.
+### III. Backend Module & API Boundary
+`apps/api` is a NestJS application with modules at:
+- `auth/`
+- `charts/`
+- `ai/`
+- `export/`
+- `common/`
 
-## UI Governance & AI Generation Constraints
+The backend exposes REST endpoints under `/api/v1/` and returns the standard JSON envelope `{ data, error }`. The `common/interceptors/response.interceptor.ts` is responsible for wrapping every response in this envelope — it is the enforcement mechanism, not convention.
 
-The following Cursor rules MUST be active in `.cursor/rules/` and MUST be enforced by CI on
-every pull request:
+The global `ValidationPipe` MUST be configured with `transform: true, whitelist: true` in `main.ts`. New backend modules MUST be imported and registered in `apps/api/src/app.module.ts`.
 
-| Rule | What It Enforces |
-|------|-----------------|
-| `no-inline-styles` | Flags `style={{}}` in all files outside `packages/design-system/` |
-| `design-system-imports` | Flags any UI import not sourced from `@charts-gen/ui` |
-| `no-page-level-css` | Flags `.module.css` files and `className=` with utility strings in `app/` |
-| `state-shell-required` | Flags data-fetching components that render without `<StateShell>` |
-| `pattern-first` | Flags page files that define layout via raw `div`/flex instead of a named pattern |
-| `i18n-strings` | Flags string literals appearing directly in JSX outside `t()` calls |
+Backend code MUST be stateless. Sessions, refresh tokens, and LLM cache live in Redis. PostgreSQL is the primary database.
 
-All pull requests MUST pass a UI review checklist verifying that no rule above is violated
-before merge is permitted. AI agents generating frontend code are bound by all six rules
-without exception; a rule violation in agent-generated code is treated identically to a
-human-authored violation.
+Auth MUST use email/password registration, bcrypt password hashing with cost factor 12, JWT access tokens (15 min TTL), and refresh tokens (7 day TTL, stored in Redis). Protected routes MUST use JWT guards.
 
-## Development Workflow & Quality Gates
+Redis key patterns:
+- `refresh:{userId}:{tokenId}` — TTL 7 days (refresh token store)
+- `llm:cache:{promptHash}` — TTL 1 hour (LLM response deduplication)
 
-The CI pipeline MUST run in this order and MUST be fully green before any merge to the main
-branch:
+`promptHash` is the SHA-256 hash of the normalized prompt string.
 
-1. **Lint** — ESLint (including `no-restricted-imports`) and Prettier format check
-2. **Type-check** — `tsc --noEmit` with `strict: true` across all workspaces
-3. **Unit tests** — co-located `*.test.tsx` for design-system; `*.spec.ts` for NestJS units
-4. **Integration tests** — API module contract tests and inter-module integration tests
-5. **Build** — production build for both `apps/web` and `apps/api`
+The AI module MUST call an OpenAI-compatible provider through environment variables using the `openai` SDK — direct HTTP calls to the LLM provider are forbidden. It MUST use structured output (JSON mode) and cache repeated prompt results keyed by `llm:cache:{promptHash}` (SHA-256 of normalized prompt, TTL 1h).
 
-When using the `/speckit.plan` workflow, the Constitution Check gate in `plan.md` MUST be
-completed before Phase 0 research begins and MUST be re-verified after Phase 1 design is
-complete. Any deviations from this constitution discovered during planning MUST be documented
-in the `Complexity Tracking` table with explicit justification before implementation proceeds.
+Allowed chart types are exactly: `bar`, `line`, `pie`, `scatter`. Any other value MUST be rejected by the AI module's allow-list.
+
+Chart export MUST run server-side.
+
+### IV. Stack Constraints
+Frontend stack:
+- Next.js 14 App Router
+- React 18
+- TypeScript with `strict: true`
+- Tailwind CSS v3, but only inside `packages/design-system`
+- shadcn/ui components copied into the repo
+- CVA for variants
+- `clsx` + `tailwind-merge` via the `cn()` helper
+- Apache ECharts via `echarts-for-react` (no direct ECharts DOM mounting)
+- `next-intl` for i18n
+- React built-in state plus SWR for server state
+- `react-hook-form` + `zod` for form handling
+- No Redux
+
+Backend stack:
+- NestJS
+- TypeORM
+- `class-validator` and `class-transformer`
+- `@nestjs/jwt` + Passport
+- `openai` SDK as the LLM client (OpenAI-compatible)
+- Redis 7 for cache and refresh-token storage
+- PostgreSQL 16
+
+Infra and workspace:
+- pnpm workspaces
+- Docker
+- GitHub Actions for CI/CD
+
+### V. Monorepo Scaffold & Naming
+The monorepo structure MUST match the scaffold:
+- `apps/web/`
+- `apps/api/`
+- `packages/design-system/`
+- `packages/ui/`
+- `packages/config/`
+
+`apps/web` MUST keep application logic separated into `app/`, `features/`, `shared/`, `locales/`, and `public/`.
+
+`apps/web/app/globals.css` contains CSS custom properties for tokens only. No other styles may appear in this file.
+
+Feature slices under `apps/web/features/<feature>/` MUST follow the sub-structure: `components/`, `hooks/`, `services/`, `types.ts`.
+
+`apps/web/shared/` MUST contain `hooks/`, `lib/`, and `types/` sub-directories. No business logic belongs here — only cross-feature, non-UI utilities.
+
+`packages/design-system` MUST keep:
+- `tokens/`
+- `components/`
+- `patterns/`
+- `hooks/`
+- `utils/`
+- a single barrel export at `index.ts`
+- `tailwind.preset.ts` (shared Tailwind configuration)
+
+`packages/ui` MUST re-export the design system and serve as the sole application import boundary.
+
+Component and pattern folders MUST use the scaffolded folder-per-export shape. New pattern names MUST be abstract, not product-feature names.
+
+Backend modules MUST follow the scaffolded NestJS layout:
+- `<module>.module.ts`
+- `<module>.controller.ts`
+- `<module>.service.ts`
+- `entities/`
+- `dto/`
+
+### VI. Tests & Quality Gates
+TypeScript MUST compile with `strict: true`. New code MUST not introduce `any` or `@ts-ignore` unless the exception is justified inline.
+
+New design-system components MUST have co-located tests unconditionally. Backend endpoints and module behavior MUST be covered by tests appropriate to the module boundary.
+
+The project CI gate MUST pass lint, type-check, unit tests, integration tests, and build before merge.
+
+### VII. Extensibility & Change Rules
+New UI capabilities MUST be added to the design system before application code consumes them. Public component APIs SHOULD be additive only; breaking changes require deprecation and migration.
+
+Any new chart type MUST be added to the AI allow-list (`bar`, `line`, `pie`, `scatter` plus the new type) and to the frontend chart renderer map. Chart-type-only changes MUST NOT introduce new architectural layers or API shapes.
+
+The LLM provider MUST remain swappable through environment variables only.
 
 ## Governance
+This constitution supersedes conflicting ad hoc conventions in the Charts Generator project.
 
-This constitution supersedes all other coding standards, style guides, and ad-hoc conventions
-in the Charts Generator project. When this document conflicts with any other guidance, this
-document takes precedence.
-
-**Amendment procedure**:
+Amendment procedure:
 1. Open a pull request that modifies `.specify/memory/constitution.md`.
-2. State the rationale for the change and the version bump type (MAJOR / MINOR / PATCH) per
-   the semantic versioning policy below.
-3. Include a migration plan for any principle removal or redefinition (MAJOR bump).
-4. The amendment takes effect only after the pull request is merged.
+2. State the rationale and version bump type.
+3. Include a migration plan for any breaking change.
+4. The amendment takes effect only after merge.
 
-**Versioning policy**:
-- MAJOR: Backward-incompatible governance change — principle removal, redefinition, or
-  relaxation of a NON-NEGOTIABLE constraint.
-- MINOR: New principle or section added, or material expansion of existing guidance.
-- PATCH: Clarifications, wording improvements, or non-semantic refinements.
+Versioning policy:
+- MAJOR: backward-incompatible governance change
+- MINOR: new principle or material expansion
+- PATCH: clarification or wording improvement
 
-**Compliance review**: All pull requests and all agent sessions MUST verify compliance against
-this document. The runtime development guidance file, if present, is
-`.specify/memory/agent-context.md`.
+Compliance review: all pull requests and agent sessions MUST verify compliance against this document.
 
-**Version**: 1.0.0 | **Ratified**: 2026-04-28 | **Last Amended**: 2026-04-29
+Version: 1.2.0 | Ratified: 2026-04-29 | Last Amended: 2026-04-29
