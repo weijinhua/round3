@@ -1,0 +1,38 @@
+---
+description: Architecture boundaries for frontend, backend, and shared layers
+alwaysApply: true
+---
+
+# Architecture Boundaries
+
+## Purpose
+Enforce the frontend/backend split, the design-system layer model, and the NestJS module structure.
+
+## Scope
+Application code in `apps/web`, `apps/api`, and shared packages that participate in product architecture.
+
+## Hard Constraints
+- MUST keep frontend layers in order: token -> component -> pattern -> page.
+- MUST keep backend modules in `auth`, `charts`, `ai`, `export`, and `common` boundaries.
+- MUST NOT let pages define layout systems or patterns import page code.
+- MUST NOT let the frontend call the LLM provider directly.
+- MUST keep shared state server-side in Redis.
+
+## Best Practices
+- SHOULD use slot-based patterns for reusable layout composition.
+
+## Enforceability
+- Lint: forbid reverse imports and direct provider access.
+- CI: architecture boundary checks on path imports.
+- Review: validate every new module against the scaffold.
+
+## Examples
+### ✅ Valid
+```tsx
+import { AppLayout, SplitLayout } from '@charts-gen/ui';
+```
+
+### ❌ Invalid
+```tsx
+import { DashboardLayout } from './DashboardLayout';
+```

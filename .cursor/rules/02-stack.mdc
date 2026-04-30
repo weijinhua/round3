@@ -1,0 +1,38 @@
+---
+description: Approved technology stack and platform conventions
+alwaysApply: true
+---
+
+# Stack Selection Rules
+
+## Purpose
+Keep implementation anchored to the approved stack so generated code stays compatible with the scaffold.
+
+## Scope
+All application, package, and tooling code.
+
+## Hard Constraints
+- MUST use Next.js 14, React 18, TypeScript, and App Router for the web app.
+- MUST use Tailwind CSS v3, shadcn/ui, CVA, and `cn()` inside the design-system only.
+- MUST use NestJS, TypeORM, `class-validator`, and `class-transformer` on the API.
+- MUST use PostgreSQL 16 and Redis 7 for persistence and cache.
+- MUST use `next-intl` for i18n and `pnpm` workspaces for the monorepo.
+
+## Best Practices
+- SHOULD keep stack-specific configuration centralized in package-level config files.
+
+## Enforceability
+- Lint: block imports from unsupported UI or backend frameworks.
+- CI: verify package and toolchain versions match the stack spec.
+- Review: reject any dependency that duplicates an approved platform concern.
+
+## Examples
+### ✅ Valid
+```ts
+import { useTranslations } from 'next-intl';
+```
+
+### ❌ Invalid
+```ts
+import { useTranslation } from 'react-i18next';
+```

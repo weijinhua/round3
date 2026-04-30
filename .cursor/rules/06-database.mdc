@@ -1,0 +1,38 @@
+---
+description: PostgreSQL and Redis persistence rules
+globs: apps/api/**/*.{ts}
+---
+
+# Database Rules
+
+## Purpose
+Keep persisted data, cache keys, and entity shapes aligned with the storage design.
+
+## Scope
+TypeORM entities, migrations, repositories, and Redis usage in `apps/api`.
+
+## Hard Constraints
+- MUST use PostgreSQL as the primary database and Redis as the cache/session store.
+- MUST store chart configurations in `charts.config` as `JSONB`.
+- MUST enforce unique user email at the database level.
+- MUST store refresh tokens in Redis with the approved key pattern and TTL.
+- MUST keep passwords hashed with bcrypt and never store plaintext credentials.
+
+## Best Practices
+- SHOULD keep entity fields and indexes explicit instead of relying on implicit defaults.
+
+## Enforceability
+- Lint: entity and repository boundary checks.
+- CI: migration and schema validation.
+- Review: reject non-JSONB chart config storage or unbounded cache keys.
+
+## Examples
+### ✅ Valid
+```ts
+const cacheKey = `refresh:${userId}:${tokenId}`;
+```
+
+### ❌ Invalid
+```ts
+const cacheKey = `token:${userId}`;
+```

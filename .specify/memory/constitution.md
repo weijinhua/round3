@@ -1,33 +1,24 @@
 ﻿<!--
 SYNC IMPACT REPORT
 ==================
-Version change: 1.1.0 -> 1.2.0
-Added principles:
-  - I.   Sub-path imports from @charts-gen/ui are forbidden
-  - II.  Components MUST NOT expose a raw className prop
-  - II.  Patterns MUST use Component Layer items only — no raw HTML elements
-  - II.  tailwind.preset.ts in design-system is the sole shared Tailwind config
-  - II.  Co-located tests required for ALL new components unconditionally
-  - III. bcrypt cost factor MUST be 12
-  - III. JWT access token TTL 15 min; refresh token TTL 7 days
-  - III. Redis key patterns with explicit TTLs and SHA-256 prompt hash
-  - III. Allowed chart types are exactly: bar, line, pie, scatter
-  - III. Global ValidationPipe with transform:true, whitelist:true
-  - III. response.interceptor.ts enforces { data, error } envelope globally
-  - III. New backend modules MUST be registered in app.module.ts
-  - IV.  react-hook-form + zod added to frontend stack
-  - IV.  openai SDK is the required LLM client
-  - IV.  Redis 7 and echarts-for-react made explicit
-  - V.   globals.css contains CSS custom properties for tokens only
-  - V.   Feature slices MUST follow components/hooks/services/types.ts structure
-  - V.   shared/ MUST contain hooks/, lib/, types/ only
-  - V.   design-system hooks/ MUST NOT call application API
+Version change: 1.2.0 -> 1.2.1
 Modified principles:
-  - III. Auth: "bcrypt password hashing" -> "bcrypt with cost factor 12"
-  - III. Auth: "JWT access tokens" -> "JWT access tokens (15 min TTL), refresh tokens (7 day TTL)"
-  - III. AI: cache key now explicitly SHA-256 of normalized prompt, TTL 1h
-  - II.  Tests: "when new or behavior changes" -> unconditional for all new components
-Removed rules:
+  - I.   Frontend Layering & UI Boundary: clarified the application import boundary
+  - II.  Design System as Sole UI Source: tightened pattern and async-state wording
+  - III. Backend Module & API Boundary: aligned wording with REST, Redis, and LLM rules
+  - V.   Monorepo Scaffold & Naming: aligned wording with scaffolded folder conventions
+  - VI.  Tests & Quality Gates: clarified strict compile and coverage expectations
+Added sections:
+  - None
+Removed sections:
+  - None
+Templates requiring updates:
+  - ✅ .specify/templates/plan-template.md (reviewed; Constitution Check remains aligned)
+  - ✅ .specify/templates/spec-template.md (reviewed; mandatory sections remain aligned)
+  - ✅ .specify/templates/tasks-template.md (reviewed; task grouping remains aligned)
+  - ✅ .cursor/commands/speckit.constitution.md (reviewed; no outdated references)
+  - ✅ .cursor/commands/x-refine-constitution-rules.md (reviewed; no outdated references)
+Follow-up TODOs:
   - None
 -->
 # Charts Generator Constitution
@@ -65,14 +56,14 @@ All components MUST:
 Patterns MUST:
 - be named generically,
 - accept `ReactNode` slots or props,
-- use design-system components rather than raw HTML elements (`<div>`, `<span>`, `<button>` are forbidden inside pattern files),
+- use design-system components only; raw HTML elements are forbidden inside pattern files,
 - not import page or feature code.
 
 `packages/design-system/tailwind.preset.ts` is the sole shared Tailwind configuration. `apps/web/tailwind.config.ts` extends it via `presets`. No other package defines its own Tailwind configuration.
 
 `packages/design-system/hooks/` contains shared UI hooks (e.g. `useMediaQuery`). These hooks MUST NOT call any application API.
 
-Pages and feature components that render async data MUST wrap it in `<StateShell>`.
+Any page or feature component that renders async data MUST wrap it in `<StateShell>`.
 
 All user-visible strings in frontend app and feature code MUST go through `t()` from `next-intl`. The default locale is `zh-CN`.
 
@@ -199,4 +190,4 @@ Versioning policy:
 
 Compliance review: all pull requests and agent sessions MUST verify compliance against this document.
 
-Version: 1.2.0 | Ratified: 2026-04-29 | Last Amended: 2026-04-29
+Version: 1.2.1 | Ratified: 2026-04-29 | Last Amended: 2026-04-30

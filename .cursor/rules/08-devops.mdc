@@ -1,0 +1,38 @@
+---
+description: Repository, CI/CD, and environment configuration rules
+alwaysApply: true
+---
+
+# DevOps Rules
+
+## Purpose
+Keep local development, CI, and deployment configuration reproducible and secret-safe.
+
+## Scope
+Root config files, Docker assets, workspace scripts, and environment templates.
+
+## Hard Constraints
+- MUST use `docker-compose.yml` for local PostgreSQL, Redis, API, and web services.
+- MUST keep `.env.example` and `.env.local.example` committed with keys only, never secrets.
+- MUST keep workspace commands and package scripts aligned with the pnpm monorepo.
+- MUST use GitHub Actions for CI checks.
+- MUST NOT commit real credentials or production secrets.
+
+## Best Practices
+- SHOULD keep config values centralized and documented in template files.
+
+## Enforceability
+- Lint: secret and config drift checks.
+- CI: build, test, and typecheck pipeline.
+- Review: reject ad hoc environment files or undocumented runtime flags.
+
+## Examples
+### ✅ Valid
+```bash
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3001
+```
+
+### ❌ Invalid
+```bash
+JWT_SECRET=super-secret-value
+```

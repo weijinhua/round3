@@ -1,0 +1,40 @@
+---
+description: NestJS backend module and controller/service conventions
+globs: apps/api/**/*.{ts,tsx}
+---
+
+# Backend Rules
+
+## Purpose
+Keep backend code inside the approved NestJS module structure with predictable request handling.
+
+## Scope
+`apps/api` only.
+
+## Hard Constraints
+- MUST place code in the matching module folder: `auth`, `charts`, `ai`, `export`, or `common`.
+- MUST version every HTTP endpoint under `/api/v1/`.
+- MUST separate controller, service, DTO, and entity concerns.
+- MUST use DTO validation and global validation pipes for request input.
+- MUST keep AI orchestration in `AIModule` and server rendering in `ExportModule`.
+
+## Best Practices
+- SHOULD keep controllers thin and push business rules into services.
+
+## Enforceability
+- Lint: path-based module boundary rules.
+- CI: route prefix and DTO validation checks.
+- Review: reject controllers containing business logic or persistence code.
+
+## Examples
+### ✅ Valid
+```ts
+@Controller('api/v1/charts')
+export class ChartsController {}
+```
+
+### ❌ Invalid
+```ts
+@Controller('charts')
+export class ChartsController {}
+```
