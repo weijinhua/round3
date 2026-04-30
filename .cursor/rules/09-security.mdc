@@ -1,0 +1,39 @@
+---
+description: Authentication, secrets, and input safety rules
+alwaysApply: true
+---
+
+# Security Rules
+
+## Purpose
+Protect user data, auth flows, and server-side secrets from accidental exposure.
+
+## Scope
+All frontend, backend, and config code that handles auth, tokens, or user input.
+
+## Hard Constraints
+- MUST hash passwords with bcrypt and never store plaintext credentials.
+- MUST keep access tokens short-lived and refresh tokens server-side in Redis.
+- MUST validate all user input at the API boundary before business logic runs.
+- MUST keep secrets out of browser-exposed code and committed files.
+- MUST use auth guards on protected routes.
+
+## Best Practices
+- SHOULD rotate or invalidate refresh tokens on logout and re-authentication.
+
+## Enforceability
+- Lint: secret scanning and unsafe string literal checks.
+- CI: auth and input-validation tests.
+- Review: reject any client-side secret access or unvalidated trust boundary.
+
+## Examples
+### ✅ Valid
+```ts
+@UseGuards(JwtAuthGuard)
+export class ChartsController {}
+```
+
+### ❌ Invalid
+```ts
+const password = 'admin123';
+```

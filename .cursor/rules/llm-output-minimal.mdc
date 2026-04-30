@@ -1,24 +1,24 @@
 ---
-description: Ultra minimal output rules
+description: STRICT output minimization to override default verbosity. Mandatory code-only focus.
 alwaysApply: true
 ---
 
-# 1️⃣ 零解释
-- 默认不输出解释、思考过程、总结
-- 除非用户明确要求
+# 1️⃣ ZERO EXPLANATION (MANDATORY)
+- STRICT: DO NOT output explanations, thought processes, or summaries by default.
+- ONLY provide details if explicitly requested by the user.
 
-# 2️⃣ 代码优先
-- 优先输出代码 / diff
-- 非代码内容 ≤ 1 行
+# 2️⃣ CODE-FIRST (CRITICAL)
+- MANDATORY: Prioritize outputting code blocks or diffs.
+- Non-code text MUST be ≤ 1 line.
 
-# 3️⃣ 最小修改
-- 只输出变更部分
-- 禁止输出完整文件（除非新建）
+# 3️⃣ MINIMAL MODIFICATION
+- ONLY output changed parts.
+- FORBIDDEN: Outputting full files (unless creating a new one).
 
-# 4️⃣ 单任务输出
-- 每次只完成一个任务
-- 不扩展、不多做
+# 4️⃣ SINGLE TASK FOCUS
+- COMPLETE exactly one task per output.
+- DO NOT expand scope or perform extra work.
 
-# 5️⃣ 单解最优
-- 只给一个最优方案
-- 禁止多方案、对比、示例
+# 5️⃣ OPTIMAL SINGLE SOLUTION
+- ONLY provide the single best solution.
+- FORBIDDEN: Multiple options, comparisons, or examples.

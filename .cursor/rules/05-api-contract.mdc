@@ -1,0 +1,38 @@
+---
+description: API envelope, DTO, and chart config contract rules
+globs: apps/{api,web}/**/*.{ts,tsx}
+---
+
+# API Contract Rules
+
+## Purpose
+Keep frontend and backend aligned on route shapes, envelopes, and chart payload schemas.
+
+## Scope
+Request/response DTOs, shared API types, and chart generation payloads.
+
+## Hard Constraints
+- MUST use the `{ data, error }` response envelope for every API response.
+- MUST version all routes under `/api/v1/`.
+- MUST represent chart generation output with a schema, not ad-hoc objects.
+- MUST keep allowed chart types limited to the approved list.
+- MUST share contract types between frontend consumers and backend producers.
+
+## Best Practices
+- SHOULD validate request and response shapes at the boundary.
+
+## Enforceability
+- Lint: schema/type import checks.
+- CI: contract tests against DTOs and shared types.
+- Review: reject payloads that bypass the envelope or schema.
+
+## Examples
+### ✅ Valid
+```json
+{ "data": { "chartType": "bar" }, "error": null }
+```
+
+### ❌ Invalid
+```json
+{ "chartType": "bar" }
+```

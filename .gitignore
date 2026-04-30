@@ -1,1 +1,31 @@
+# Dependencies
 node_modules
+.pnpm-store
+
+# Build outputs
+dist
+.next
+out
+build
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# pnpm store cache (not the lockfile — pnpm-lock.yaml is committed)
+.pnpm-store/

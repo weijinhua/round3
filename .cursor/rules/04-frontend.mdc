@@ -1,0 +1,43 @@
+---
+description: Next.js frontend layering, UI import, and page composition rules
+globs: apps/web/**/*.{ts,tsx}
+---
+
+# Frontend Rules
+
+## Purpose
+Keep the web app within the 4-layer UI model and prevent page-level styling drift.
+
+## Scope
+`apps/web` page, feature, and shared UI code.
+
+## Hard Constraints
+- MUST import UI primitives only from `@charts-gen/ui`.
+- MUST NOT import design-system subpaths or define new UI primitives in app code.
+- MUST NOT use `style={{}}`, CSS modules, or Tailwind utility strings in `app/` or `features/`.
+- MUST use a named pattern for page layout.
+- MUST wrap async data states with `<StateShell>`.
+- MUST use `t()` for user-visible strings.
+
+## Best Practices
+- SHOULD keep pages style-free and delegate composition to patterns.
+
+## Enforceability
+- Lint: restricted imports, inline-style ban, and string-literal checks.
+- CI: page-level style scan.
+- Review: verify every page composes patterns instead of raw layout divs.
+
+## Examples
+### ✅ Valid
+```tsx
+<AppLayout sidebar={<ChartHistorySidebar />}>
+  <SplitLayout top={<ChartCanvas />} bottom={<ChatInputPattern onSend={send} />} />
+</AppLayout>
+```
+
+### ❌ Invalid
+```tsx
+<div style={{ display: 'flex', gap: 16 }} className="p-4">
+  Save
+</div>
+```

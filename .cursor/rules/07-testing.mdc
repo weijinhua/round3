@@ -1,0 +1,37 @@
+---
+description: Required testing and verification standards
+alwaysApply: true
+---
+
+# Testing Rules
+
+## Purpose
+Ensure changes are verified with tests that protect the architecture, contracts, and design-system boundary.
+
+## Scope
+All production code, generated code, and shared packages.
+
+## Hard Constraints
+- MUST add or update tests for any behavioral change.
+- MUST test design-system components, backend services, DTO validation, and API contract changes.
+- MUST keep tests deterministic and independent of network calls.
+- MUST prefer focused unit tests plus contract tests over broad brittle snapshots.
+
+## Best Practices
+- SHOULD include at least one success path and one failure path for new logic.
+
+## Enforceability
+- Lint: flag test files that depend on real network or secrets.
+- CI: run unit, integration, and contract test suites.
+- Review: reject untested changes to routes, entities, or shared UI primitives.
+
+## Examples
+### ✅ Valid
+```ts
+expect(response.error).toBeNull();
+```
+
+### ❌ Invalid
+```ts
+await fetch('https://api.openai.com/v1/models');
+```

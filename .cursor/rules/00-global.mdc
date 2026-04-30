@@ -1,0 +1,37 @@
+---
+description: Global deterministic rules for Charts Generator
+alwaysApply: true
+---
+
+# Global Project Rules
+
+## Purpose
+Keep all generated work aligned with the architecture, stack, and scaffold specs as the single source of truth.
+
+## Scope
+All files, all agents, and all generated code in this repository.
+
+## Hard Constraints
+- MUST follow `specs/01-architecture.md`, `specs/02-stack.md`, and `specs/03-scaffold.md`.
+- MUST NOT introduce new frameworks, libraries, folders, or conventions without updating the specs first.
+- MUST keep changes deterministic, minimal, and aligned to the existing scaffold.
+- MUST prefer enforceable rules over prose-only guidance.
+
+## Best Practices
+- SHOULD reuse existing modules, tokens, and shared utilities before creating new ones.
+
+## Enforceability
+- Lint: repository-wide import, style, and boundary rules.
+- CI: spec drift checks and type checks.
+- Review: reject any code that conflicts with the approved specs.
+
+## Examples
+### ✅ Valid
+```ts
+import { Button } from '@charts-gen/ui';
+```
+
+### ❌ Invalid
+```ts
+import { Button } from '../../packages/design-system/components/Button';
+```

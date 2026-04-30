@@ -1,0 +1,16 @@
+{
+  "charts": {
+    "history": "History",
+    "noCharts": "No charts yet",
+    "noChartSelected": "Enter a prompt to generate a chart",
+    "chartWillAppearHere": "Chart will appear here",
+    "promptPlaceholder": "Describe the chart data you want...",
+    "send": "Generate"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password"
+  }
+}
