@@ -1,0 +1,40 @@
+# Git Rules
+
+## Purpose
+Keep the commit history clean, traceable to specs, and safe for the pnpm monorepo worktree workflow.
+
+## Scope
+All commits, branches, and pull requests in the repository.
+
+## Hard Constraints
+- MUST use Conventional Commits format: `<type>(<scope>): <subject>` (e.g. `feat(auth): add JWT refresh`).
+- MUST keep scope aligned to a module or package: `auth`, `charts`, `ai`, `export`, `ui`, `web`, `api`, `common`.
+- MUST NOT commit directly to `main`; all changes go through a PR.
+- MUST NOT commit secrets, `.env` files, or build artifacts.
+- MUST NOT use `--force` push on shared branches (`main`, `develop`, `release/*`).
+- MUST include the spec feature slug in the branch name: `feat/<slug>/<short-description>`.
+- MUST keep each commit focused on a single concern; mixed-scope commits are forbidden.
+
+## Best Practices
+- SHOULD squash fix-up commits before merging a PR.
+- SHOULD reference the spec or issue number in the PR description.
+- SHOULD use git worktrees for parallel feature development to avoid branch pollution.
+
+## Enforceability
+- Lint: `commitlint` enforces Conventional Commits on every commit message.
+- CI: branch-name check rejects pushes that do not match `feat|fix|chore|docs|refactor/<scope>/<description>`.
+- Review: reject PRs with commits that mix unrelated scopes or lack a conventional prefix.
+
+## Examples
+### ✅ Valid
+```
+feat(auth): implement refresh token rotation
+fix(charts): correct axis label truncation on mobile
+```
+
+### ❌ Invalid
+```
+wip
+updated stuff
+fix everything
+```

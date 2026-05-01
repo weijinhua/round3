@@ -1,0 +1,37 @@
+# SDD Rules
+
+## Purpose
+Enforce Spec-Driven Development discipline so every feature traces back to a spec before code is written.
+
+## Scope
+All feature work, module additions, and behavioral changes in the repository.
+
+## Hard Constraints
+- MUST have an approved spec in `specs/features/<feature>/spec.md` before implementing any feature.
+- MUST keep spec, plan, and implementation in sync; a spec change MUST trigger a plan revision before coding resumes.
+- MUST store feature specs under `specs/features/<slug>/` with at minimum `spec.md` and `version.md`.
+- MUST NOT introduce new modules, routes, entities, or shared packages without a corresponding spec entry.
+- MUST NOT merge implementation that contradicts the approved spec without updating the spec first.
+- MUST version specs using `version.md` with semver and a changelog entry for every revision.
+
+## Best Practices
+- SHOULD write the spec in the template format defined in `.specify/templates/spec-template.md`.
+- SHOULD produce a `plan.md` alongside the spec before starting implementation tasks.
+- SHOULD reference the originating spec file in PR descriptions.
+
+## Enforceability
+- Lint: CI script checks that every `apps/` or `packages/` directory change has a matching `specs/features/` entry.
+- CI: spec-drift check fails the build if implementation exports diverge from the spec's API contract section.
+- Review: reject PRs that add features without a linked spec file.
+
+## Examples
+### ✅ Valid
+```
+specs/features/01-auth/spec.md      # exists and approved
+apps/api/src/auth/auth.module.ts    # implements the spec
+```
+
+### ❌ Invalid
+```
+apps/api/src/notifications/        # new module with no spec entry
+```

@@ -40,6 +40,8 @@ Execution Steps:
    - 07-testing.mdc
    - 08-devops.mdc
    - 09-security.mdc
+   - 10-sdd.mdc
+   - 11-git.mdc
 
 4. Rule File Template (STRICT)
 
