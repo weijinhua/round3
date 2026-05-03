@@ -33,12 +33,12 @@
 	│   └── version.md                 ← UI版本
 	│
 	├── features/
-	│   ├── 00-ui-foundation/
-	│   │   ├── spec.md
+	│   ├── 000-ui-foundation/
+	│   │   ├── prd.md
 	│   │   └── version.md
 	│   │
-	│   ├── 01-xxx/
-	│   │   ├── spec.md
+	│   ├── 001-xxx/
+	│   │   ├── prd.md
 	│   │   └── version.md
 	│   │
 	│   └── index.md
@@ -151,7 +151,7 @@
 	--------------------------------
 	【输出格式要求】
 	
-	--- file: specs/features/01-auth/spec.md ---
+	--- file: specs/features/001-auth/prd.md ---
 	内容
 	
 	--------------------------------
