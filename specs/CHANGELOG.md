@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.0] - Release
+- Initial spec set for Charts Generator: UI foundation, Auth, Chart generation, History, Export
+
+# Changelog
+
 ## [1.0.0] - 2026-04-30
 - 初始化项目规格
 - 新增 UI 基础设计系统（00-ui-foundation）
