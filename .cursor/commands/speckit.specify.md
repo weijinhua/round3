@@ -76,11 +76,12 @@ Given that feature description, do this:
    - If `"timestamp"`, add `--timestamp` (Bash) or `-Timestamp` (PowerShell) to the script invocation
    - If `"sequential"` or absent, do not add any extra flag (default behavior)
 
-  - If the provided feature description begins with an explicit feature identifier that already includes a numeric prefix (for example `000-ui-foundation`), treat that identifier as the explicit branch name and spec directory. In this case:
+  - If the provided feature description begins with an explicit feature identifier (for example `000-ui-foundation`) or a feature directory path under `specs/features/` (for example `specs/features/000-ui-foundation` or `specs/features/000-ui-foundation/spec.md`), normalize the input to the feature identifier and treat that identifier as the explicit branch name and spec directory. In this case:
     - Do NOT auto-number or add `--timestamp`.
-    - Pass the provided identifier as the first script argument so the script writes the spec to `specs/features/<identifier>/spec.md`.
-    - Example PowerShell invocation for explicit identifier:
+    - Strip any leading `specs/features/` prefix and any trailing `/spec.md` suffix before passing the identifier as the first script argument so the script writes the spec to `specs/features/<identifier>/spec.md`.
+    - Example PowerShell invocations for explicit identifier or directory:
       `.specify/scripts/powershell/create-new-feature.ps1 "000-ui-foundation" -Json -ShortName "ui-foundation" "UI Foundation"`
+      `.specify/scripts/powershell/create-new-feature.ps1 "specs/features/000-ui-foundation" -Json -ShortName "ui-foundation" "UI Foundation"`
 
    - Bash example: `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" --json --short-name "user-auth" "Add user authentication"`
    - Bash (timestamp): `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" --json --timestamp --short-name "user-auth" "Add user authentication"`
