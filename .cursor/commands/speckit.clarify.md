@@ -14,6 +14,8 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
+If the user provides a short feature identifier (e.g. `000-ui-foundation`) with no path separators, the command will expand it to `specs/features/<ARGUMENTS>` before processing. This makes `/speckit.clarify 000-ui-foundation` equivalent to `/speckit.clarify specs/features/000-ui-foundation`.
+
 ## Outline
 
 Goal: Detect and reduce ambiguity or missing decision points in the active feature specification and record the clarifications directly in the spec file.
