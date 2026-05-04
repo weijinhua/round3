@@ -24,16 +24,17 @@ An end user can create an account with email and password, receive a verificatio
 
 ### User Story 2 - Login and session management (Priority: P1)
 
-End users can sign in using email and password (only verified accounts allowed). Successful login creates a session with reasonable expiry and allows logout.
+End users can sign in using email and password (only verified accounts allowed). Successful login creates a session that expires after 1 hour of issuance (no persistent "remember me" sessions at launch) and allows logout.
 
 **Why this priority**: Allows authenticated use of product features.
 
 **Independent Test**: With a verified account, sign in with correct credentials, verify session persists for expected duration, and logout ends the session.
 
 **Acceptance Scenarios**:
-1. **Given** a verified account, **When** correct credentials are submitted, **Then** the user is authenticated and redirected to their dashboard.
+1. **Given** a verified account, **When** correct credentials are submitted, **Then** the user is authenticated, a session valid for 1 hour is created, and the user is redirected to their dashboard.
 2. **Given** incorrect credentials, **When** a login is attempted, **Then** a clear error is returned and no session is created.
 3. **Given** an authenticated session, **When** user logs out, **Then** the session is invalidated and subsequent requests require re-authentication.
+4. **Given** a session older than 1 hour, **When** the user makes a request, **Then** the session is rejected and the user must re-authenticate.
 
 ---
 
@@ -77,7 +78,7 @@ Users can explicitly log out; inactive sessions expire automatically.
 - **FR-004**: System MUST allow users to request a password reset and set a new password via a time-limited link.
 - **FR-005**: System MUST provide clear, non-sensitive error messages for authentication failures (bad credentials, expired tokens).
 - **FR-006**: System MUST support user-initiated logout and invalidate corresponding sessions.
-- **FR-007**: System MUST enforce reasonable password strength rules and reject weak passwords.
+- **FR-007**: System MUST enforce password strength rules: minimum length 8 and must include both letters and numbers. The system SHOULD also block commonly breached/compromised passwords.
 - **FR-008**: System MUST rate-limit authentication-related endpoints to reduce brute force and abuse.
 - **FR-009**: System MUST log security-relevant events (failed logins, password resets, verification attempts) for audit and monitoring.
 - **FR-010**: System MUST allow users to request a new verification email if the previous one expired.
@@ -104,6 +105,7 @@ Users can explicitly log out; inactive sessions expire automatically.
 - Auth method at launch: Email + password with verification and password reset. No social logins or passwordless for v1.
 - Multi-factor authentication (MFA) is out of scope for v1 and may be added as P2/P3.
 - An email delivery service (SMTP or provider) and background worker to send emails are available.
-- Sessions will be stored using existing session/session-store patterns in the project (implementation details left to planning).
+- Sessions will be stored using existing session/session-store patterns in the project (implementation details left to planning). Default session lifetime: 1 hour. No persistent "remember me" sessions at launch.
 - Security best practices (hashed passwords, rate limits, token entropy) will be followed; exact mechanisms are determined during planning.
+- Password policy summary: minimum length 8, must include both letters and numbers; commonly breached passwords SHOULD be blocked.
 

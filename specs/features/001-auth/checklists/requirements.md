@@ -31,5 +31,7 @@
 
 ## Validation Notes
 
-All checklist items were reviewed against `specs/features/001-auth/spec.md`. The spec is focused on end-user email/password flows (signup, verification, login, password reset, logout) with clear acceptance scenarios and measurable success criteria. No [NEEDS CLARIFICATION] markers remain. Proceed to planning (`/speckit.plan`) when ready.
+All checklist items were reviewed against `specs/features/001-auth/spec.md`. The spec is focused on end-user email/password flows (signup, verification, login, password reset, logout) with clear acceptance scenarios and measurable success criteria. No [NEEDS CLARIFICATION] markers remain.
+
+Clarifications on session policy (1 hour session lifetime, no persistent "remember me" in v1) and password policy (minimum length 8, letters + numbers, block commonly breached passwords) were merged into the spec on 2026-05-04 and validated. Proceed to planning (`/speckit.plan`) when ready.
 
