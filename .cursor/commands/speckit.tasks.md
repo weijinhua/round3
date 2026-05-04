@@ -18,6 +18,13 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
+ 
+### Accepted invocation forms
+
+- Short form: `/speckit.tasks 000-ui-foundation`
+- Full path form: `/speckit.tasks specs/features/000-ui-foundation`
+
+When the full path form is provided, normalize it to the short form by extracting the final path segment. For example, `specs/features/000-ui-foundation` → `000-ui-foundation`. Downstream steps should treat the normalized feature identifier as the canonical input and construct FEATURE_DIR as `specs/features/{featureId}`.
 
 ## Pre-Execution Checks
 

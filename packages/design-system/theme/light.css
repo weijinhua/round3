@@ -1,0 +1,13 @@
+@import "../dist/tokens.css";
+
+/* Light theme adjustments (tokens drive most values) */
+:root {
+  --background: var(--color-surface);
+  --text: var(--color-neutral-900);
+}
+
+.theme-light {
+  background: var(--background);
+  color: var(--text);
+}
+
