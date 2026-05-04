@@ -1,5 +1,129 @@
 openapi: 3.0.3
 info:
+  title: Auth API
+  version: 1.0.0
+servers:
+  - url: /api/v1
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Validation error
+
+  /auth/verify:
+    post:
+      summary: Verify email using token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Verify'
+      responses:
+        '200':
+          description: Verified
+        '400':
+          description: Invalid token
+
+  /auth/login:
+    post:
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Authenticated
+
+  /auth/logout:
+    post:
+      summary: Logout current session
+      responses:
+        '204':
+          description: Logged out
+
+  /auth/password-reset/request:
+    post:
+      summary: Request password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+      responses:
+        '200':
+          description: Email queued
+
+  /auth/password-reset/confirm:
+    post:
+      summary: Confirm password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+      responses:
+        '200':
+          description: Password updated
+
+components:
+  schemas:
+    Register:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required: [email, password]
+    Verify:
+      type: object
+      properties:
+        token:
+          type: string
+      required: [token]
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required: [email, password]
+    PasswordResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required: [email]
+    PasswordResetConfirm:
+      type: object
+      properties:
+        token:
+          type: string
+        newPassword:
+          type: string
+      required: [token, newPassword]
+openapi: 3.0.3
+info:
   title: Auth API (001-auth) — Contracts
   version: 1.0.0
 paths:
