@@ -30,6 +30,7 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
+If the user provides a short feature identifier (e.g. `000-ui-foundation`) with no path separators, the command will expand it to `specs/features/<ARGUMENTS>` before processing. Absolute paths remain accepted.
 
 ## Execution Steps
 
