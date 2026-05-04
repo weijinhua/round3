@@ -5,6 +5,13 @@
 **Status**: Draft  
 **Input**: User description: "UI Foundation"
 
+## Clarifications
+
+### Session 2026-05-04
+
+- Q: How should design tokens be published/provided? → A: Option A — canonical JSON source with generated CSS custom properties, JS/TS exports, and an NPM package.
+- Q: How should accessibility be validated across components and patterns? → A: Option A — automated accessibility checks in CI (axe) with gating failures plus manual review for complex cases.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Design tokens & docs (Priority: P1)
@@ -58,12 +65,16 @@ Feature teams can assemble pages using recommended layout patterns (page shell, 
 ### Functional Requirements
 
 - **FR-001**: Provide a single, discoverable source of design tokens covering color, spacing, typography, radii, elevation/motion tokens, and an icon registry. Tokens must include usage guidance and examples.
+- **FR-001**: Provide a single, discoverable source of design tokens covering color, spacing, typography, radii, elevation/motion tokens, and an icon registry. Tokens must include usage guidance and examples.
+  - Canonical source: `design-tokens.json` (authoritative). Build outputs: CSS custom properties (CSS vars), JS/TS exports, and a packaged tokens NPM package for consumption by design-system and apps.
 - **FR-002**: Deliver a documented catalogue of core components (Button, Input/Textarea, Select/Dropdown, Modal/Dialog, Card/Panel, Avatar/ListItem, Spinner/Skeleton, EmptyState/ErrorState, Icon, StateShell, Chart wrappers and legend/toolbar helpers).
 - **FR-003**: All components and patterns MUST meet the accessibility baseline WCAG 2.1 AA (keyboard focus, ARIA attributes, contrast, and announced state changes).
 - **FR-004**: Provide documented usage examples and acceptance guidelines for each component and pattern, including recommended markup structure and common variants.
 - **FR-005**: Provide two baseline themes: light and dark. Document token values and usage differences for both.
 - **FR-006**: Provide layout patterns (page shell, split layout, card list pattern) with slot-based guidance so feature pages can be composed predictably.
 - **FR-007**: Provide test guidance (examples or harnesses) that allow teams to verify component behavior and accessibility without relying on production data.
+ - **FR-007**: Provide test guidance (examples or harnesses) that allow teams to verify component behavior and accessibility without relying on production data.
+  - Include automated accessibility checks in CI (e.g., axe or equivalent) configured to fail the build on regressions; require periodic manual audits for major/complex components.
 - **FR-008**: Document limitations and out-of-scope areas (visual polish beyond baseline, native mobile components).
 
 ### Key Entities
@@ -78,6 +89,7 @@ Feature teams can assemble pages using recommended layout patterns (page shell, 
 
 - **SC-001**: 100% of components listed in the PRD (`specs/ui/components.md`) have documentation pages and at least one usage example.
 - **SC-002**: All documented components pass a basic WCAG 2.1 AA accessibility checklist (manual or automated) for the examples provided.
+ - **SC-002**: All documented components pass a basic WCAG 2.1 AA accessibility checklist (automated in CI, plus manual audits for complex cases) for the examples provided.
 - **SC-003**: Feature teams can build a representative dashboard page using only tokens, components, and patterns from this spec within one working day (measured by a simple developer trial).
 - **SC-004**: Support requests about inconsistent UI usage for features adopting the design-system decrease by 50% within the first two feature implementations (measured qualitatively / via issue tracker).
 
