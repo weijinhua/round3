@@ -1,6 +1,6 @@
 {
   "ai": "cursor-agent",
-  "branch_numbering": "sequential",
+  "branch_numbering": "explicit",
   "here": false,
   "integration": "cursor-agent",
   "preset": null,

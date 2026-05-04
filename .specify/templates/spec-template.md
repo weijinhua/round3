@@ -1,6 +1,7 @@
 # Feature Specification: [FEATURE NAME]
 
-**Feature Branch**: `[###-feature-name]`  
+**Feature Branch**: `[$BRANCH_NAME]`  
+If you provide a prefixed identifier (for example `000-ui-foundation`), that identifier will be used verbatim as the branch name and as the spec directory `specs/features/<identifier>/`.
 **Created**: [DATE]  
 **Status**: Draft  
 **Input**: User description: "$ARGUMENTS"
