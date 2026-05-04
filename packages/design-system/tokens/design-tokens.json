@@ -1,0 +1,56 @@
+{
+  "color": {
+    "primary": "#0b5fff",
+    "primary-600": "#0a4fe6",
+    "neutral-900": "#0f1724",
+    "neutral-700": "#374151",
+    "success": "#10b981",
+    "danger": "#ef4444",
+    "surface": "#ffffff",
+    "muted": "#6b7280"
+  },
+  "typography": {
+    "font-family-base": "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
+    "font-size-base": "16px",
+    "line-height-base": "1.5",
+    "sizes": {
+      "xs": "12px",
+      "sm": "14px",
+      "md": "16px",
+      "lg": "18px",
+      "xl": "24px",
+      "xxl": "32px"
+    }
+  },
+  "spacing": {
+    "scale": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "24px",
+      "6": "32px",
+      "7": "40px"
+    }
+  },
+  "radius": {
+    "sm": "4px",
+    "md": "8px",
+    "lg": "12px"
+  },
+  "elevation": {
+    "sm": "0 1px 2px rgba(15,23,36,0.04)",
+    "md": "0 4px 12px rgba(15,23,36,0.08)"
+  },
+  "motion": {
+    "duration-fast": "120ms",
+    "duration-medium": "250ms",
+    "duration-slow": "400ms"
+  },
+  "icons": {
+    "close": "<svg .../>",
+    "check": "<svg .../>",
+    "chevron-down": "<svg .../>"
+  }
+}
+
