@@ -1,0 +1,146 @@
+openapi: 3.0.3
+info:
+  title: Auth API (001-auth) — Contracts
+  version: 1.0.0
+paths:
+  /api/v1/auth/register:
+    post:
+      summary: Create a new user (sends verification email)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required: [email, password]
+      responses:
+        '201':
+          description: Account created; verification email queued
+          content:
+            application/json:
+              example:
+                data: { message: "verification_sent" }
+                error: null
+        '400':
+          description: Validation error
+  /api/v1/auth/verify:
+    post:
+      summary: Verify an account using a token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+              required: [token]
+      responses:
+        '200':
+          description: Account verified
+          content:
+            application/json:
+              example:
+                data: { message: "verified" }
+                error: null
+        '400':
+          description: Invalid or expired token
+  /api/v1/auth/login:
+    post:
+      summary: Login and create session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+              required: [email, password]
+      responses:
+        '200':
+          description: Authenticated
+          content:
+            application/json:
+              example:
+                data:
+                  accessToken: "jwt.access.token"
+                  expiresIn: 3600
+                error: null
+        '401':
+          description: Invalid credentials or unverified account
+  /api/v1/auth/logout:
+    post:
+      summary: Invalidate a session (requires Authorization)
+      responses:
+        '200':
+          description: Logged out
+          content:
+            application/json:
+              example:
+                data: { message: "logged_out" }
+                error: null
+  /api/v1/auth/password-reset/request:
+    post:
+      summary: Request a password reset email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string, format: email }
+              required: [email]
+      responses:
+        '200':
+          description: Reset email queued (response does not reveal account existence)
+          content:
+            application/json:
+              example:
+                data: { message: "reset_requested" }
+                error: null
+  /api/v1/auth/password-reset/confirm:
+    post:
+      summary: Confirm password reset with token + new password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token: { type: string }
+                newPassword: { type: string }
+              required: [token, newPassword]
+      responses:
+        '200':
+          description: Password updated
+          content:
+            application/json:
+              example:
+                data: { message: "password_reset" }
+                error: null
+        '400':
+          description: Invalid token or weak password
+
+components:
+  schemas:
+    ErrorEnvelope:
+      type: object
+      properties:
+        data: {}
+        error:
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+
