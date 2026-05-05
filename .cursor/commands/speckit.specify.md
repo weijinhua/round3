@@ -70,23 +70,23 @@ Given that feature description, do this:
      - "Create a dashboard for analytics" → "analytics-dashboard"
      - "Fix payment processing timeout bug" → "fix-payment-timeout"
 
-2. **Create the feature branch** by running the script with `--short-name` (and `--json`). In sequential mode, do NOT pass `--number` — the script auto-detects the next available number. In timestamp mode, the script generates a `YYYYMMDD-HHMMSS` prefix automatically:
+2. **Create the feature branch** by running the script with `--short-name`, `--json`, and `--allow-existing-branch`. In sequential mode, do NOT pass `--number` — the script auto-detects the next available number. In timestamp mode, the script generates a `YYYYMMDD-HHMMSS` prefix automatically:
 
    **Branch numbering mode**: Before running the script, check if `.specify/init-options.json` exists and read the `branch_numbering` value.
    - If `"timestamp"`, add `--timestamp` (Bash) or `-Timestamp` (PowerShell) to the script invocation
    - If `"sequential"` or absent, do not add any extra flag (default behavior)
 
-  - If the provided feature description begins with an explicit feature identifier (for example `000-ui-foundation`) or a feature directory path under `specs/features/` (for example `specs/features/000-ui-foundation` or `specs/features/000-ui-foundation/spec.md`), normalize the input to the feature identifier and treat that identifier as the explicit branch name and spec directory. In this case:
+  - If the provided feature description is one of `000-ui-foundation`, `specs/features/000-ui-foundation`, or `specs/features/000-ui-foundation/spec.md`, normalize it to the short feature identifier `000-ui-foundation` and continue exactly as if the user had typed `000-ui-foundation`.
+    - This applies to `000-ui-foundation`, `specs/features/000-ui-foundation`, and `specs/features/000-ui-foundation/spec.md`.
     - Do NOT auto-number or add `--timestamp`.
-    - Strip any leading `specs/features/` prefix and any trailing `/spec.md` suffix before passing the identifier as the first script argument so the script writes the spec to `specs/features/<identifier>/spec.md`.
-    - Example PowerShell invocations for explicit identifier or directory:
-      `.specify/scripts/powershell/create-new-feature.ps1 "000-ui-foundation" -Json -ShortName "ui-foundation" "UI Foundation"`
-      `.specify/scripts/powershell/create-new-feature.ps1 "specs/features/000-ui-foundation" -Json -ShortName "ui-foundation" "UI Foundation"`
+    - Strip any leading `specs/features/` prefix and any trailing `/spec.md` suffix before passing the canonical identifier as the first script argument so the script writes the spec to `specs/features/<identifier>/spec.md`.
+    - Example PowerShell invocations for the canonical identifier:
+      `.specify/scripts/powershell/create-new-feature.ps1 "000-ui-foundation" -Json -AllowExistingBranch -ShortName "ui-foundation" "UI Foundation"`
 
-   - Bash example: `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" --json --short-name "user-auth" "Add user authentication"`
-   - Bash (timestamp): `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" --json --timestamp --short-name "user-auth" "Add user authentication"`
-   - PowerShell example: `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" -Json -ShortName "user-auth" "Add user authentication"`
-   - PowerShell (timestamp): `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" -Json -Timestamp -ShortName "user-auth" "Add user authentication"`
+   - Bash example: `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" --json --allow-existing-branch --short-name "user-auth" "Add user authentication"`
+   - Bash (timestamp): `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" --json --allow-existing-branch --timestamp --short-name "user-auth" "Add user authentication"`
+   - PowerShell example: `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" -Json -AllowExistingBranch -ShortName "user-auth" "Add user authentication"`
+   - PowerShell (timestamp): `.specify/scripts/powershell/create-new-feature.ps1 "$ARGUMENTS" -Json -AllowExistingBranch -Timestamp -ShortName "user-auth" "Add user authentication"`
 
    **IMPORTANT**:
    - Do NOT pass `--number` — the script determines the correct next number automatically

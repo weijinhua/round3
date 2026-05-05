@@ -8,11 +8,21 @@ const commandPath = fileURLToPath(new URL('./speckit.specify.md', import.meta.ur
 const commandText = readFileSync(commandPath, 'utf8');
 
 describe('speckit.specify command', () => {
-  it('supports existing feature directories before the legacy flow', () => {
-    expect(commandText).toContain('### Directory Mode');
-    expect(commandText).toContain('Use `FEATURE_DIR/prd.md` as the primary input.');
-    expect(commandText).toContain('fall back to `FEATURE_DIR/spec.md`');
-    expect(commandText).toContain('In Directory Mode, SPEC_FILE is `FEATURE_DIR/spec.md`.');
-    expect(commandText).toContain('### Legacy Description Mode');
+  it('keeps the natural-language branch flow intact', () => {
+    expect(commandText).toContain('The text the user typed after `/speckit.specify` in the triggering message **is** the feature description.');
+    expect(commandText).toContain('Generate a concise short name');
+    expect(commandText).toContain('Create the feature branch');
+    expect(commandText).toContain('Load `.specify/templates/spec-template.md` to understand required sections.');
+  });
+
+  it('normalizes explicit feature paths to the short feature identifier', () => {
+    expect(commandText).toContain('normalize it to the short feature identifier `000-ui-foundation`');
+    expect(commandText).toContain('This applies to `000-ui-foundation`, `specs/features/000-ui-foundation`, and `specs/features/000-ui-foundation/spec.md`.');
+    expect(commandText).toContain('continue exactly as if the user had typed `000-ui-foundation`');
+  });
+
+  it('opts into reusing an existing feature branch', () => {
+    expect(commandText).toContain('-AllowExistingBranch');
+    expect(commandText).toContain('create-new-feature.ps1 "$ARGUMENTS" -Json -AllowExistingBranch');
   });
 });
