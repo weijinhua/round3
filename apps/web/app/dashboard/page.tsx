@@ -1,15 +1,5 @@
-import { AppLayout, SplitLayout } from '@charts-gen/ui';
-import { DashboardSidebar } from '@/features/charts/components/DashboardSidebar';
-import { ChartArea } from '@/features/charts/components/ChartArea';
-import { PromptBar } from '@/features/charts/components/PromptBar';
+import { ChartDashboard } from '@/features/charts/components/ChartDashboard';
 
 export default function DashboardPage() {
-  return (
-    <AppLayout sidebar={<DashboardSidebar />}>
-      <SplitLayout
-        top={<ChartArea />}
-        bottom={<PromptBar />}
-      />
-    </AppLayout>
-  );
+  return <ChartDashboard />;
 }

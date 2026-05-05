@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('auth_users')
@@ -11,7 +12,7 @@ export class User {
   @Column({ name: 'password_hash', type: 'varchar', length: 255 })
   passwordHash: string;
 
-  @Column({ default: false })
+  @Column({ type: 'boolean', default: false })
   verified: boolean;
 
   @CreateDateColumn({ name: 'created_at' })

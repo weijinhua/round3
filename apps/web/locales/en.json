@@ -5,7 +5,16 @@
     "noChartSelected": "Enter a prompt to generate a chart",
     "chartWillAppearHere": "Chart will appear here",
     "promptPlaceholder": "Describe the chart data you want...",
-    "send": "Generate"
+    "generate": "Generate",
+    "saveChart": "Save",
+    "exportChart": "Export",
+    "loadingChart": "Generating chart...",
+    "chartType": "Chart type",
+    "chartTypes": {
+      "bar": "Bar",
+      "line": "Line",
+      "pie": "Pie"
+    }
   },
   "auth": {
     "login": "Login",
