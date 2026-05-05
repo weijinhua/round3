@@ -153,7 +153,7 @@ function Test-FeatureBranch {
 
 function Get-FeatureDir {
     param([string]$RepoRoot, [string]$Branch)
-    Join-Path $RepoRoot "specs/$Branch"
+    Join-Path $RepoRoot "specs/features/$Branch"
 }
 
 function Get-FeaturePathsEnv {
