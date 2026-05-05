@@ -1,6 +1,6 @@
 ---
 name: chart-generation
-overview: "Implement the chart-generation workflow end to end: prompt input, chart preview, chart-type selection, export/save/history, and the supporting backend charts module."
+overview: "Implement the chart-generation workflow end to end: prompt input, chart preview, chart-type selection, and the supporting backend charts module."
 todos:
   - id: task-1
     content: Lock down the dashboard feature slice
@@ -21,11 +21,11 @@ isProject: false
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build the chart-generation experience on the dashboard so an authenticated user can enter a data prompt, review a generated chart, override the chart type, and export or save the result.
+**Goal:** Build the chart-generation experience on the dashboard so an authenticated user can enter a data prompt, review a generated chart, and override the chart type.
 
-**Architecture:** Reuse the existing dashboard slice in `apps/web/features/charts/` and keep the dashboard page as a thin composition layer in `apps/web/app/dashboard/page.tsx`. Add a NestJS `charts` module under `apps/api/src/charts/` for prompt interpretation and chart-result handling, and keep export/save/history behavior on the server side so the web UI only orchestrates user interactions and renders state.
+**Architecture:** Reuse the existing dashboard slice in `apps/web/features/charts/` and keep the dashboard page as a thin composition layer in `apps/web/app/dashboard/page.tsx`. Add a NestJS `charts` module under `apps/api/src/charts/` for prompt interpretation and chart-result handling, and keep the web UI focused on user interactions and state rendering.
 
-**Tech Stack:** Next.js 14 App Router, React 18, TypeScript, `next-intl`, `StateShell` and other UI primitives from `@charts-gen/ui`, NestJS, TypeORM, `class-validator`, `class-transformer`, Redis-backed session/history support, and server-side chart export.
+**Tech Stack:** Next.js 14 App Router, React 18, TypeScript, `next-intl`, `StateShell` and other UI primitives from `@charts-gen/ui`, NestJS, TypeORM, `class-validator`, and `class-transformer`.
 
 ---
 
@@ -35,19 +35,18 @@ isProject: false
 - Modify: [`apps/web/app/dashboard/page.tsx`](apps/web/app/dashboard/page.tsx)
 - Modify: [`apps/web/features/charts/components/PromptBar.tsx`](apps/web/features/charts/components/PromptBar.tsx)
 - Modify: [`apps/web/features/charts/components/ChartArea.tsx`](apps/web/features/charts/components/ChartArea.tsx)
-- Modify: [`apps/web/features/charts/components/DashboardSidebar.tsx`](apps/web/features/charts/components/DashboardSidebar.tsx)
 - Modify: [`apps/web/locales/en.json`](apps/web/locales/en.json)
 - Modify: [`apps/web/locales/zh-CN.json`](apps/web/locales/zh-CN.json)
 - Test: add or update co-located component tests where needed
 
 - [ ] **Step 1: Write the failing tests**
-  - Cover prompt submission, empty/error states, chart-type override, and history sidebar empty/loading states.
-  - Assert the dashboard page still composes `AppLayout`, `SplitLayout`, `ChartArea`, `PromptBar`, and `DashboardSidebar`.
+  - Cover prompt submission, empty/error states, and chart-type override.
+  - Assert the dashboard page still composes `AppLayout`, `SplitLayout`, `ChartArea`, and `PromptBar`.
 
 - [ ] **Step 2: Implement the minimal UI behavior**
   - Replace the placeholder `console.log` flow in `PromptBar` with real prompt submission state.
   - Render a generated chart preview in `ChartArea` and keep the empty state when no chart exists.
-  - Keep the sidebar focused on saved chart history.
+  - Keep the dashboard focused on prompt input and chart preview.
   - Add the required user-facing strings to both locale files.
 
 - [ ] **Step 3: Run focused UI tests**
@@ -73,7 +72,7 @@ isProject: false
   - Register the `charts` module in the root app module.
   - Validate prompt input at the API boundary.
   - Return a chart result payload the web app can render.
-  - Persist saved chart history records and ensure export uses the server-side flow.
+  - Return a chart result payload the web app can render.
 
 - [ ] **Step 3: Run API tests**
   - Verify the new module tests pass and the app module still compiles with the new registration.

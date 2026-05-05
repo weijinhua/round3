@@ -68,7 +68,6 @@ An end user receives clear feedback when the prompt does not contain enough usab
 - **FR-007**: The system MUST show a clear, user-friendly message when the prompt does not contain enough usable information to build a chart.
 - **FR-008**: The system MUST allow the user to revise an unsuccessful prompt and try again without restarting the overall flow.
 - **FR-009**: The system MUST handle prompts with partial or ambiguous data by extracting any clearly stated values and surfacing missing information to the user.
-- **FR-010**: The system MUST keep chart generation scoped to the currently entered prompt and preview; saving, sharing, and exporting are handled by other features.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -88,7 +87,7 @@ An end user receives clear feedback when the prompt does not contain enough usab
 
 ## Assumptions
 
-- The feature is focused on generating a chart preview from a text prompt; saving, sharing, exporting, and collaboration are out of scope for this specification.
+- The feature is focused on generating a chart preview from a text prompt and allowing chart-type selection; saving, sharing, exporting, and collaboration are out of scope for this specification.
 - Users may enter either a single series or multiple series in one prompt.
 - The system should prefer a readable interpretation over blocking the user when the prompt is partly ambiguous.
 - The feature will support common business chart use cases first, with advanced analytical charting treated as future scope.

@@ -14,6 +14,7 @@
 
 - [ ] T003 [P] Define and validate the chart request DTOs and result shapes in `apps/api/src/charts/dto/generate-chart.dto.ts`, `apps/api/src/charts/dto/update-chart-type.dto.ts`, and `apps/api/src/charts/entities/chart.entity.ts`
 - [ ] T004 [P] Register the charts module boundary in `apps/api/src/charts/charts.module.ts` and `apps/api/src/app.module.ts`
+- [ ] T005A [P] Add chart-type allow-list validation and renderer-map coverage in `apps/api/src/charts/dto/update-chart-type.dto.ts`, `apps/web/features/charts/types.ts`, and `apps/web/features/charts/components/ChartArea.tsx`
 - [ ] T005 [P] Add baseline service/controller coverage for chart generation success and failure paths in `apps/api/src/charts/charts.service.spec.ts` and `apps/api/src/charts/charts.controller.spec.ts`
 
 **Checkpoint**: the shared chart contract and API boundary are ready for feature work.
@@ -64,7 +65,7 @@
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T015 [P] Re-run and stabilize the chart slice regression coverage in `apps/web/features/charts/services/chart-generator.spec.ts`, `apps/web/features/charts/services/charts-api.spec.ts`, `apps/api/src/charts/charts.service.spec.ts`, and `apps/api/src/charts/charts.controller.spec.ts`
+- [ ] T015 [P] Re-run and stabilize the chart slice regression coverage in `apps/web/features/charts/services/chart-generator.spec.ts`, `apps/api/src/charts/charts.service.spec.ts`, and `apps/api/src/charts/charts.controller.spec.ts`
 
 ---
 
