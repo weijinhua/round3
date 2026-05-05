@@ -4,10 +4,17 @@
   "scripts": {
     "dev": "pnpm --filter @charts-gen/web dev & pnpm --filter @charts-gen/api dev",
     "build": "pnpm -r build",
-    "lint": "pnpm -r lint"
+    "lint": "pnpm -r lint",
+    "test:quickstart": "vitest run specs/features/001-auth/quickstart-tests"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
-    "turbo": "^1.13.3"
+    "turbo": "^1.13.3",
+    "@types/jest": "^30.0.0",
+    "@types/ioredis": "^5.0.0",
+    "vitest": "^1.3.0"
+  },
+  "dependencies": {
+    "ioredis": "^5.10.1"
   }
 }

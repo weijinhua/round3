@@ -4,7 +4,8 @@ const withNextIntl = createNextIntlPlugin('./shared/lib/i18n.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@charts-gen/ui', '@charts-gen/design-system'],
+  // Temporarily disable transpiling workspace packages to avoid long dev compile times.
+  // If this fixes the dev hang, consider selectively transpiling only packages that need ESM -> CJS transformation.
 };
 
 export default withNextIntl(nextConfig);

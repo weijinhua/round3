@@ -24,17 +24,17 @@ An end user can create an account with email and password, receive a verificatio
 
 ### User Story 2 - Login and session management (Priority: P1)
 
-End users can sign in using email and password (only verified accounts allowed). Successful login creates a session that expires after 1 hour of issuance (no persistent "remember me" sessions at launch) and allows logout.
+End users can sign in using email and password (only verified accounts allowed). Successful login issues a short-lived access token and a longer-lived refresh token to manage authentication sessions. Access tokens expire after 15 minutes; refresh tokens expire after 7 days and are stored server-side (Redis) for revocation and lifecycle management. No persistent "remember me" sessions at launch.
 
 **Why this priority**: Allows authenticated use of product features.
 
 **Independent Test**: With a verified account, sign in with correct credentials, verify session persists for expected duration, and logout ends the session.
 
 **Acceptance Scenarios**:
-1. **Given** a verified account, **When** correct credentials are submitted, **Then** the user is authenticated, a session valid for 1 hour is created, and the user is redirected to their dashboard.
+1. **Given** a verified account, **When** correct credentials are submitted, **Then** the user is authenticated, an access token valid for 15 minutes and an associated refresh token valid for 7 days are issued, and the user is redirected to their dashboard.
 2. **Given** incorrect credentials, **When** a login is attempted, **Then** a clear error is returned and no session is created.
 3. **Given** an authenticated session, **When** user logs out, **Then** the session is invalidated and subsequent requests require re-authentication.
-4. **Given** a session older than 1 hour, **When** the user makes a request, **Then** the session is rejected and the user must re-authenticate.
+4. **Given** an access token older than its TTL (15 minutes), **When** the user makes a request, **Then** the access token is rejected and the client may use a valid refresh token to obtain a new access token. Refresh tokens invalidated on logout must be rejected.
 
 ---
 
@@ -105,7 +105,7 @@ Users can explicitly log out; inactive sessions expire automatically.
 - Auth method at launch: Email + password with verification and password reset. No social logins or passwordless for v1.
 - Multi-factor authentication (MFA) is out of scope for v1 and may be added as P2/P3.
 - An email delivery service (SMTP or provider) and background worker to send emails are available.
-- Sessions will be stored using existing session/session-store patterns in the project (implementation details left to planning). Default session lifetime: 1 hour. No persistent "remember me" sessions at launch.
+ - Authentication will follow the constitution-required model: JWT access tokens (15 minute TTL) and refresh tokens (7 day TTL) stored in Redis for revocation and session management. Implementation details (opaque vs signed refresh tokens, whether refresh tokens are JWTs or opaque IDs) are to be decided in research and recorded in `data-model.md`. No persistent "remember me" sessions at launch.
 - Security best practices (hashed passwords, rate limits, token entropy) will be followed; exact mechanisms are determined during planning.
 - Password policy summary: minimum length 8, must include both letters and numbers; commonly breached passwords SHOULD be blocked.
 

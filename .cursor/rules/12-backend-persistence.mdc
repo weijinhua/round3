@@ -1,0 +1,23 @@
+---
+alwaysApply: true
+---
+# Backend Persistence Rules
+
+## When a Data Model is defined:
+
+MUST:
+- Generate database schema definition
+- Generate migration script files
+- Include migration commands (CLI)
+- Ensure migrations are runnable
+
+MUST NOT:
+- Only describe migrations in documentation
+- Omit migration files
+
+## Tech Stack Default (if not specified):
+- Migration: use project ORM or SQL-based migration
+
+## Validation:
+- Migration must create tables defined in spec
+- Schema must match Data Model fields

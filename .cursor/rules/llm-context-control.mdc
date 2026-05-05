@@ -5,7 +5,7 @@ alwaysApply: true
 
 # 1️⃣ MINIMAL CONTEXT (STRICT)
 - MANDATORY: Provide only the absolute minimum information required.
-- DEFAULT: Access ≤ 3 files per turn.
+- DEFAULT: Access ≤ 10 files per turn.
 
 # 2️⃣ NO FULL LOADING (CRITICAL)
 - FORBIDDEN: Loading the entire project or directory.

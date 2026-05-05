@@ -11,6 +11,13 @@ $ARGUMENTS
 You **MUST** consider the user input before proceeding (if not empty).
 If the user provides a short feature identifier (e.g. `000-ui-foundation`) with no path separators, the command will expand it to `specs/features/<ARGUMENTS>` before processing. Absolute paths remain accepted.
 
+Examples:
+
+- `/speckit.implement 000-ui-foundation` expands to `specs/features/000-ui-foundation` and is processed the same as:
+- `/speckit.implement specs/features/000-ui-foundation`
+
+Both forms are equivalent for the purpose of selecting the feature to implement.
+
 ## Pre-Execution Checks
 
 **Check for extension hooks (before implementation)**:

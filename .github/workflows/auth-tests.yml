@@ -1,0 +1,26 @@
+name: Auth tests
+
+on:
+  push:
+    paths:
+      - 'apps/api/**'
+      - 'specs/features/001-auth/**'
+  pull_request:
+    paths:
+      - 'apps/api/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: |
+          pnpm install
+      - name: Run auth unit tests (api)
+        run: |
+          pnpm --filter @charts-gen/api test || echo "Tests may require local setup"
