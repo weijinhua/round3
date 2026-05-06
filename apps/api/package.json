@@ -36,6 +36,7 @@
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.19.39",
+    "class-transformer": "^0.5.1",
     "typeorm": "^0.3",
     "typescript": "^5.3.3"
   }
