@@ -16,8 +16,9 @@ function authHeaders(token?: string): Record<string, string> {
 }
 
 export async function generateChart(prompt: string, chartType?: ChartType, token?: string): Promise<GeneratedChart> {
+  let response: Response;
   try {
-    const response = await fetch('/api/v1/charts/generate', {
+    response = await fetch('/api/v1/charts/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,15 +26,17 @@ export async function generateChart(prompt: string, chartType?: ChartType, token
       },
       body: JSON.stringify({ prompt, chartType: chartType ?? null }),
     });
-    return await parseResponse<GeneratedChart>(response);
   } catch {
     return buildChartPreview(prompt, chartType);
   }
+
+  return parseResponse<GeneratedChart>(response);
 }
 
 export async function saveChart(prompt: string, chartType?: ChartType, token?: string): Promise<SavedChart> {
+  let response: Response;
   try {
-    const response = await fetch('/api/v1/charts', {
+    response = await fetch('/api/v1/charts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,7 +44,6 @@ export async function saveChart(prompt: string, chartType?: ChartType, token?: s
       },
       body: JSON.stringify({ prompt, chartType: chartType ?? null }),
     });
-    return await parseResponse<SavedChart>(response);
   } catch {
     const generated = buildChartPreview(prompt, chartType);
     const saved: SavedChart = {
@@ -55,30 +57,34 @@ export async function saveChart(prompt: string, chartType?: ChartType, token?: s
     localHistory.unshift(saved);
     return saved;
   }
+
+  return parseResponse<SavedChart>(response);
 }
 
 export async function listCharts(token?: string): Promise<SavedChart[]> {
+  let response: Response;
   try {
-    const response = await fetch('/api/v1/charts', {
+    response = await fetch('/api/v1/charts', {
       headers: {
         ...authHeaders(token),
       },
     });
-    return await parseResponse<SavedChart[]>(response);
   } catch {
     return [...localHistory];
   }
+
+  return parseResponse<SavedChart[]>(response);
 }
 
 export async function exportChart(id: string, token?: string): Promise<{ filename: string; svg: string }> {
+  let response: Response;
   try {
-    const response = await fetch(`/api/v1/charts/${id}/export`, {
+    response = await fetch(`/api/v1/charts/${id}/export`, {
       method: 'POST',
       headers: {
         ...authHeaders(token),
       },
     });
-    return await parseResponse<{ filename: string; svg: string }>(response);
   } catch {
     const chart = localHistory.find((item) => item.id === id);
     if (!chart) {
@@ -89,6 +95,8 @@ export async function exportChart(id: string, token?: string): Promise<{ filenam
       svg: `<svg viewBox="0 0 960 540" role="img" aria-label="${chart.title}"></svg>`,
     };
   }
+
+  return parseResponse<{ filename: string; svg: string }>(response);
 }
 
 export function clearLocalCharts() {

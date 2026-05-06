@@ -99,9 +99,9 @@ isProject: false
 ### Task 4: Verify feature readiness
 
 **Files:**
-- Create or modify: [`specs/002-chart-generation/quickstart.md`](specs/002-chart-generation/quickstart.md)
-- Create or modify: [`specs/002-chart-generation/research.md`](specs/002-chart-generation/research.md)
-- Create or modify: [`specs/002-chart-generation/data-model.md`](specs/002-chart-generation/data-model.md)
+- Create or modify: [`specs/features/002-chart-generation/quickstart.md`](specs/features/002-chart-generation/quickstart.md)
+- Create or modify: [`specs/features/002-chart-generation/research.md`](specs/features/002-chart-generation/research.md)
+- Create or modify: [`specs/features/002-chart-generation/data-model.md`](specs/features/002-chart-generation/data-model.md)
 
 - [ ] **Step 1: Document the model and flow**
   - Capture the chart prompt, generated chart, chart type, export artifact, and saved history relationships.

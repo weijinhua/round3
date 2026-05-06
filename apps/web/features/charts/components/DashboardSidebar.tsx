@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@charts-gen/ui';
 import type { SavedChart } from '../types';

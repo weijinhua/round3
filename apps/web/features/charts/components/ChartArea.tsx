@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Button, Card, CardContent } from '@charts-gen/ui';
 import { ChartCanvas } from './ChartCanvas';
@@ -13,6 +14,7 @@ interface ChartAreaProps {
   error: string | null;
   onSave: () => void;
   onExport: () => void;
+  onRetry: () => void;
 }
 
 export function ChartArea({
@@ -24,6 +26,7 @@ export function ChartArea({
   error,
   onSave,
   onExport,
+  onRetry,
 }: ChartAreaProps) {
   const t = useTranslations('charts');
   return (
@@ -31,7 +34,14 @@ export function ChartArea({
       <Card className="w-full max-w-5xl">
         <CardContent className="space-y-4 p-6">
           {loading ? <p>{t('loadingChart')}</p> : null}
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+          {error ? (
+            <div className="flex items-center gap-3">
+              <p className="text-sm text-red-600">{error}</p>
+              <Button variant="secondary" size="sm" onClick={onRetry}>
+                {t('retry')}
+              </Button>
+            </div>
+          ) : null}
           {chart ? (
             <>
               <div className="flex items-center justify-between gap-4">

@@ -9,6 +9,11 @@
     "saveChart": "Save",
     "exportChart": "Export",
     "loadingChart": "Generating chart...",
+    "emptyPromptError": "Enter a chart prompt first.",
+    "generateError": "Unable to generate chart.",
+    "saveError": "Unable to save chart.",
+    "exportError": "Unable to export chart.",
+    "retry": "Try again",
     "chartType": "Chart type",
     "chartTypes": {
       "bar": "Bar",

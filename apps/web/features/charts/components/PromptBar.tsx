@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Button, Input } from '@charts-gen/ui';
 import type { ChartType } from '../types';

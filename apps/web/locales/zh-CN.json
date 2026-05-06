@@ -9,6 +9,11 @@
     "saveChart": "保存",
     "exportChart": "导出",
     "loadingChart": "正在生成图表...",
+    "emptyPromptError": "请先输入图表提示词。",
+    "generateError": "无法生成图表。",
+    "saveError": "无法保存图表。",
+    "exportError": "无法导出图表。",
+    "retry": "重试",
     "chartType": "图表类型",
     "chartTypes": {
       "bar": "柱状图",

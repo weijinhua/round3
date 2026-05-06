@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { NotFoundException } from '@nestjs/common';
 import { ChartsService, chartGenerationInternals } from './charts.service';
 import type { Chart } from './entities/chart.entity';
+import { sampleChart } from './test-utils';
 
 describe('ChartsService', () => {
   it('builds a generated chart from prompt pairs', () => {
@@ -53,5 +54,22 @@ describe('ChartsService', () => {
     } as any);
 
     await expect(service.getById('user-1', 'missing')).rejects.toBeInstanceOf(NotFoundException);
+  });
+
+  it('updates the chart type without changing the stored data', async () => {
+    const repo = {
+      create: vi.fn(),
+      save: vi.fn(async (chart) => chart),
+      find: vi.fn(),
+      findOne: vi.fn().mockResolvedValue({ ...sampleChart }),
+      delete: vi.fn(),
+    } as any;
+
+    const service = new ChartsService(repo);
+    const updated = await service.updateChartType('user-1', 'chart-1', 'pie');
+
+    expect(updated.config.chartType).toBe('pie');
+    expect(updated.config.xAxis).toEqual(sampleChart.config.xAxis);
+    expect(repo.save).toHaveBeenCalled();
   });
 });

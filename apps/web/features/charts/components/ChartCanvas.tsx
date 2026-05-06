@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import type { ChartConfig, ChartType } from '../types';
 
 const palette = ['#2563eb', '#16a34a', '#f97316', '#a855f7', '#dc2626'];
